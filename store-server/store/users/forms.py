@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm,UserCreationForm,UserChangeForm
 from django import forms
 
 from users.models import User
@@ -33,7 +33,10 @@ class UserRegistationForm(UserCreationForm):
         model = User
         fields = ('first_name','last_name','username','email','password1','password2')
 
-    # def __int__(self,*args,**kwargs):
-    #     super(UserRegistationForm,self).__init__(*args,**kwargs)
-    #     for field_name , field in self.fields.items():
-    #         field.widget.attrs['class'] = 'form-control py-4'
+class UserProfileForm(UserChangeForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control py-4','readonly':True}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'class': 'form-control py-4','readonly': True}))
+    image = forms.ImageField(widget=forms.FileInput(),required=False)
+    class Meta:
+        model = User
+        fields = ('username','email','first_name','last_name','image')
